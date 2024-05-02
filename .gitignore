@@ -1,0 +1,8 @@
+# Expo
+.expo/
+dist/
+web-build/
+
+# Code
+node_modules/
+.env
