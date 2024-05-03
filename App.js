@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
+import Map from './Map';
 import RoutesTab from './tabs/RoutesTab';
 
 const renderScene = SceneMap({
@@ -58,9 +59,7 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Text>
-                This is the background text
-            </Text>
+            <Map />
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
