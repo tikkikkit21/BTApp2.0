@@ -27,10 +27,8 @@ export default function App() {
             <TabBar
                 {...props}
                 indicatorStyle={{ backgroundColor: 'white' }}
-                style={{ backgroundColor: 'pink' }}
+                style={styles.tabBar}
                 renderIcon={({ route, focused, color }) => {
-                    console.log("route:", route)
-                    console.log("focused:", focused)
                     switch (route.key) {
                         case "home":
                             return <Entypo name="map" size={24} color={color} />
@@ -71,4 +69,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop: 50
     },
+    tabBar: {
+        backgroundColor: '#861F41',
+        paddingBottom: 10
+    }
 });
