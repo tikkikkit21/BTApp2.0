@@ -4,8 +4,10 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import RoutesTab from './tabs/RoutesTab';
 
 const renderScene = SceneMap({
-    first: () => null,
-    second: () => <RoutesTab />,
+    home: () => null,
+    routes: () => <RoutesTab />,
+    plan: () => null,
+    settings: () => null
 });
 
 export default function App() {
@@ -13,10 +15,11 @@ export default function App() {
 
     const [index, setIndex] = React.useState(0);
     const [routes] = useState([
-        { key: 'first', title: 'First' },
-        { key: 'second', title: 'Second' },
+        { key: 'home', title: 'Home' },
+        { key: 'routes', title: 'Routes' },
+        { key: 'plan', title: 'Plan a Trip' },
+        { key: 'settings', title: 'Settings' },
     ]);
-
 
     return (
         <View style={styles.container}>
