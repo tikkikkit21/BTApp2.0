@@ -6,15 +6,15 @@ export default function RoutesTab() {
     const snapPoints = useMemo(() => ['27%', '50%', '70%', '95%'], []);
     const bottomSheetRef = useRef(null);
 
-    const handleSheetChanges = useCallback((index) => {
-        console.log('handleSheetChanges', index);
-    }, []);
+    // const handleSheetChanges = useCallback((index) => {
+    //     console.log('handleSheetChanges', index);
+    // }, []);
 
 
     return (
         <BottomSheet
             ref={bottomSheetRef}
-            onChange={handleSheetChanges}
+            // onChange={handleSheetChanges}
             snapPoints={snapPoints}
         >
             <BottomSheetView style={styles.contentContainer}>
