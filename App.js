@@ -26,19 +26,31 @@ export default function App() {
         return (
             <TabBar
                 {...props}
-                indicatorStyle={{ backgroundColor: 'white' }}
+                indicatorStyle={{ opacity: 0 }}
                 style={styles.tabBar}
-                renderIcon={({ route, focused, color }) => {
+                renderLabel={({ route, focused, color }) => {
+                    let icon;
                     switch (route.key) {
                         case "home":
-                            return <Entypo name="map" size={24} color={color} />
+                            icon = <Entypo name="map" size={24} color={color} />;
+                            break;
                         case "routes":
-                            return <FontAwesome6 name="route" size={24} color={color} />
+                            icon = <FontAwesome6 name="route" size={24} color={color} />;
+                            break;
                         case "plan":
-                            return <FontAwesome5 name="map-marked-alt" size={24} color={color} />
+                            icon = <FontAwesome5 name="map-marked-alt" size={24} color={color} />;
+                            break;
                         case "settings":
-                            return <FontAwesome6 name="gear" size={24} color={color} />
+                            icon = <FontAwesome6 name="gear" size={24} color={color} />
+                            break;
                     }
+
+                    return (
+                        <View style={styles.label}>
+                            {icon}
+                            <Text style={{ color: color }}>{route.title}</Text>
+                        </View>
+                    );
                 }}
             />
         );
@@ -72,5 +84,10 @@ const styles = StyleSheet.create({
     tabBar: {
         backgroundColor: '#861F41',
         paddingBottom: 10
+    },
+    label: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
