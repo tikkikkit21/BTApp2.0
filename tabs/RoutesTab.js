@@ -12,17 +12,15 @@ export default function RoutesTab() {
 
 
     return (
-        <View style={styles.container}>
-            <BottomSheet
-                ref={bottomSheetRef}
-                onChange={handleSheetChanges}
-                snapPoints={snapPoints}
-            >
-                <BottomSheetView style={styles.contentContainer}>
-                    <Text>Awesome 🎉</Text>
-                </BottomSheetView>
-            </BottomSheet>
-        </View>
+        <BottomSheet
+            ref={bottomSheetRef}
+            onChange={handleSheetChanges}
+            snapPoints={snapPoints}
+        >
+            <BottomSheetView style={styles.contentContainer}>
+                <Text>This is the routes list</Text>
+            </BottomSheetView>
+        </BottomSheet>
     );
 
 }

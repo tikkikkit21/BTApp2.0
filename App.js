@@ -1,27 +1,25 @@
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import HomeTab from './tabs/HomeTab';
 import RoutesTab from './tabs/RoutesTab';
 
-const Tab = createBottomTabNavigator();
-
 export default function App() {
+    const [tab, setTab] = useState("");
+
     return (
-        <NavigationContainer>
-            <Tab.Navigator>
-                <Tab.Screen name="HomeTab" component={HomeTab} />
-                <Tab.Screen name="RoutesTab" component={RoutesTab} />
-            </Tab.Navigator>
-        </NavigationContainer>
+        <View style={styles.container}>
+            <Text>
+                This is the background text
+            </Text>
+            {tab === "routes" && <RoutesTab />}
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: 'white',
+        padding: 50
     },
 });
