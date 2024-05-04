@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { AntDesign, FontAwesome6 } from "@expo/vector-icons"
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { getCurrentRoutes } from "../controllers/routeController";
 
@@ -17,6 +18,21 @@ export default function RoutesTab() {
         fetchRoutes();
     }, []);
 
+    // renders route data into pretty React components
+    const renderItem = useCallback(({ item: bus }) => {
+        console.log("item:", bus);
+        return (
+            <View style={styles.routeContainer}>
+                <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
+                <View>
+                    <Text>{bus.RouteShortName}</Text>
+                    <Text>{bus.RouteName}</Text>
+                </View>
+                <AntDesign name="right" size={24} color="black" />
+            </View>
+        );
+    }, []);
+
     return (
         <BottomSheet
             ref={bottomSheetRef}
@@ -25,10 +41,10 @@ export default function RoutesTab() {
             <BottomSheetFlatList
                 data={routes}
                 keyExtractor={(_, index) => index}
+                renderItem={renderItem}
             />
         </BottomSheet>
     );
-
 }
 
 const styles = StyleSheet.create({
@@ -39,4 +55,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         alignItems: 'center',
     },
+    routeContainer: {
+
+    }
 });
