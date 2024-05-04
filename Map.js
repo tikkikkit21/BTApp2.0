@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -13,6 +13,7 @@ export default function Map() {
         latitudeDelta: 0.051202637986392574,
         longitudeDelta: 0.03720943536600885,
     });
+    const refreshTimer = useRef(null);
 
     // load bus locations
     async function loadBuses() {
@@ -23,11 +24,19 @@ export default function Map() {
             bus.color = await getColor(bus.RouteShortName);
         }
 
-        setBuses(busData)
+        setBuses(busData);
     }
 
+    // auto-refresh bus locations on live map on a set interval
     useEffect(() => {
         loadBuses();
+        refreshTimer.current = setInterval(() => {
+            loadBuses();
+        }, 10 * 1000);
+
+        return () => {
+            clearInterval(refreshTimer.current);
+        };
     }, []);
 
     const markers = buses.map((bus, index) => {
