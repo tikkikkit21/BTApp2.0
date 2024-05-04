@@ -62,9 +62,9 @@ export default function App() {
         <View style={styles.container}>
             <View style={styles.mapContainer}>
                 <Map />
+                {index === 1 && <RoutesTab />}
+                {index === 2 && <PlanATripTab />}
             </View>
-            {index === 1 && <RoutesTab />}
-            {index === 2 && <PlanATripTab />}
             <View style={styles.tabContainer}>
                 <TabView
                     navigationState={{ index, routes }}
