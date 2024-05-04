@@ -5,7 +5,7 @@ import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { getCurrentRoutes } from "../controllers/routeController";
 
 export default function RoutesTab() {
-    const snapPoints = useMemo(() => ['25%', '50%', '75%', '100%'], []);
+    const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
     const bottomSheetRef = useRef(null);
     const [routes, setRoutes] = useState([]);
 
@@ -75,5 +75,5 @@ const styles = StyleSheet.create({
     },
     labelDescription: {
         fontSize: 15
-    }
+    },
 });
