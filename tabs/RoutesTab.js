@@ -22,11 +22,13 @@ export default function RoutesTab() {
     const renderItem = useCallback(({ item: bus }) => {
         console.log("item:", bus);
         return (
-            <View style={styles.routeContainer}>
-                <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
-                <View>
-                    <Text>{bus.RouteShortName}</Text>
-                    <Text>{bus.RouteName}</Text>
+            <View style={styles.routeItem}>
+                <View style={styles.label}>
+                    <FontAwesome6 name="bus-simple" size={30} color={`#${bus.RouteColor}`} />
+                    <View>
+                        <Text>{bus.RouteShortName}</Text>
+                        <Text>{bus.RouteName}</Text>
+                    </View>
                 </View>
                 <AntDesign name="right" size={24} color="black" />
             </View>
@@ -55,7 +57,14 @@ const styles = StyleSheet.create({
     contentContainer: {
         alignItems: 'center',
     },
-    routeContainer: {
-
+    routeItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 10
+    },
+    label: {
+        flexDirection: "row",
+        alignItems: "center"
     }
 });
