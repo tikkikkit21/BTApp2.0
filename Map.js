@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { getAllBuses } from "./controllers/busController";
+import { getColor } from "./controllers/routeController";
 
 export default function Map() {
     const [buses, setBuses] = useState([]);
@@ -17,9 +18,14 @@ export default function Map() {
     useEffect(() => {
         async function loadBuses() {
             const busData = await getAllBuses();
-            setBuses(busData);
-        }
 
+            // add color property
+            for (bus of busData) {
+                bus.color = await getColor(bus.RouteShortName);
+            }
+
+            setBuses(busData)
+        }
         loadBuses();
     }, []);
 
@@ -36,7 +42,7 @@ export default function Map() {
                 pointerEvents="auto"
             >
                 <View>
-                    <FontAwesome6 name="bus-simple" size={30} color="black" />
+                    <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
                 </View>
             </Marker>
         );
