@@ -4,14 +4,14 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import Map from './Map';
 import RoutesTab from './tabs/RoutesTab';
+import PlanATripTab from './tabs/PlanATripTab';
 
-// const renderScene = SceneMap({
-//     home: () => { console.log("home clicked") },
-//     routes: () => { console.log("routes clicked") },
-//     plan: () => null,
-//     settings: () => null
-// });
-const renderScene = () => null;
+const renderScene = SceneMap({
+    home: () => null,
+    routes: () => null,
+    plan: () => null,
+    settings: () => null
+});
 
 export default function App() {
     const layout = useWindowDimensions();
@@ -60,19 +60,23 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Map />
+            <View style={styles.mapContainer}>
+                <Map />
+            </View>
             {index === 1 && <RoutesTab />}
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={{ width: layout.width }}
-                tabBarPosition='bottom'
-                swipeEnabled={false}
-                animationEnabled={false}
-                renderTabBar={renderTabBar}
-                style={styles.tabView}
-            />
+            {index === 2 && <PlanATripTab />}
+            <View style={styles.tabContainer}>
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderScene={renderScene}
+                    onIndexChange={setIndex}
+                    initialLayout={{ width: layout.width }}
+                    tabBarPosition='bottom'
+                    swipeEnabled={false}
+                    animationEnabled={false}
+                    renderTabBar={renderTabBar}
+                />
+            </View>
         </View>
     );
 }
@@ -81,7 +85,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    tabView: {
+    mapContainer: {
+        height: "90%"
+    },
+    tabContainer: {
         height: '10%'
     },
     tabBar: {

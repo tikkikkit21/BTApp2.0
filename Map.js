@@ -23,6 +23,6 @@ export default function Map() {
 const styles = StyleSheet.create({
     map: {
         width: '100%',
-        height: '90%',
+        height: '100%',
     },
 });
