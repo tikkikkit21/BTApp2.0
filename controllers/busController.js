@@ -5,24 +5,23 @@ import { formatTextProperty } from "./util";
 const ROOT = process.env.BT_API_ROOT;
 
 /**
- * Fetches info on every bus that's currently running
- * 
- * @returns list of bus info as JS objects
+ * Fetches info on every bus that's currently running=
+ * @returns list of bus info
  */
 export async function getAllBuses() {
     const { data } = await axios.get(`${ROOT}/GetCurrentBusInfo`);
-    let json = xml2js(data, { compact: true });
-    json = json.DocumentElement.LatestInfoTable;
+    const json = xml2js(data, { compact: true });
 
-    json = json.map(b => formatTextProperty(b));
-    return json;
+    let buses = json.DocumentElement.LatestInfoTable;
+    buses = buses.map(b => formatTextProperty(b));
+
+    return buses;
 }
 
 /**
  * Fetches info about a particular bus
- * 
  * @param {string} shortName abbreviated bus name (ex: "HWA")
- * @returns info on bus as JS object
+ * @returns info about the bus
  */
 export async function getBus(shortName) {
     const buses = await getAllBuses();
