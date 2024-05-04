@@ -30,7 +30,7 @@ export default function RoutesTab() {
                         <Text style={{ ...styles.labelDescription, color }}>{bus.RouteName}</Text>
                     </View>
                 </View>
-                <AntDesign name="right" size={24} color="black" />
+                <AntDesign name="right" size={24} color="gray" />
             </View>
         );
     }, []);
