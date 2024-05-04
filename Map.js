@@ -16,8 +16,8 @@ export default function Map() {
     const refreshTimer = useRef(null);
     const [isOnCooldown, setIsOnCooldown] = useState(false);
 
-    // load bus locations
-    async function loadBuses() {
+    // fetch bus locations
+    async function fetchBuses() {
         const busData = await getAllBuses();
 
         // add color property
@@ -30,9 +30,9 @@ export default function Map() {
 
     // auto-refresh bus locations on live map on a set interval
     useEffect(() => {
-        loadBuses();
+        fetchBuses();
         refreshTimer.current = setInterval(() => {
-            loadBuses();
+            fetchBuses();
         }, 30 * 1000);
 
         return () => {
@@ -44,9 +44,9 @@ export default function Map() {
     function handleRefreshClick() {
         if (!isOnCooldown) {
             clearInterval(refreshTimer.current);
-            refreshTimer.current = setInterval(loadBuses, 10000);
+            refreshTimer.current = setInterval(fetchBuses, 10000);
 
-            loadBuses();
+            fetchBuses();
 
             setIsOnCooldown(true);
             setTimeout(() => {
