@@ -17,9 +17,10 @@ export default function RoutesTab() {
             // onChange={handleSheetChanges}
             snapPoints={snapPoints}
         >
-            <BottomSheetView style={styles.contentContainer}>
+            {/* <BottomSheetView style={styles.contentContainer}>
                 <Text>This is the routes list</Text>
-            </BottomSheetView>
+            </BottomSheetView> */}
+            <Text>This is the routes list</Text>
         </BottomSheet>
     );
 
@@ -27,12 +28,10 @@ export default function RoutesTab() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 24,
         backgroundColor: 'grey',
     },
     contentContainer: {
-        flex: 1,
         alignItems: 'center',
     },
 });

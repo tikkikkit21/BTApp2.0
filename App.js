@@ -5,12 +5,13 @@ import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import Map from './Map';
 import RoutesTab from './tabs/RoutesTab';
 
-const renderScene = SceneMap({
-    home: () => null,
-    routes: () => <RoutesTab />,
-    plan: () => null,
-    settings: () => null
-});
+// const renderScene = SceneMap({
+//     home: () => { console.log("home clicked") },
+//     routes: () => { console.log("routes clicked") },
+//     plan: () => null,
+//     settings: () => null
+// });
+const renderScene = () => null;
 
 export default function App() {
     const layout = useWindowDimensions();
@@ -60,6 +61,7 @@ export default function App() {
     return (
         <View style={styles.container}>
             <Map />
+            {index === 1 && <RoutesTab />}
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
@@ -69,6 +71,7 @@ export default function App() {
                 swipeEnabled={false}
                 animationEnabled={false}
                 renderTabBar={renderTabBar}
+                style={styles.tabView}
             />
         </View>
     );
@@ -76,12 +79,14 @@ export default function App() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: 'white'
+        flex: 1
+    },
+    tabView: {
+        height: '10%'
     },
     tabBar: {
         backgroundColor: '#861F41',
-        paddingBottom: 10
+        height: "100%"
     },
     label: {
         flex: 1,
