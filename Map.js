@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
-import { FontAwesome6, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import { getAllBuses } from "./controllers/busController";
 import { getColor } from "./controllers/routeController";
+import { getAlerts } from "./controllers/alertController";
 
 export default function Map() {
     const [buses, setBuses] = useState([]);
+    const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState({
         latitude: 37.227468937500895,
         longitude: -80.42357646125542,
@@ -27,6 +29,15 @@ export default function Map() {
 
         setBuses(busData);
     }
+
+    // fetch alerts
+    useEffect(() => {
+        async function fetchAlerts() {
+            const alertsData = await getAlerts();
+            setAlerts(alertsData);
+        }
+        fetchAlerts();
+    }, []);
 
     // auto-refresh bus locations on live map on a set interval
     useEffect(() => {
@@ -88,6 +99,13 @@ export default function Map() {
                 <FontAwesome name="refresh" size={24} color="white" />
             </TouchableOpacity>
         </View>
+        {alerts.length > 0 &&
+            <View style={styles.alertButton}>
+                <TouchableOpacity>
+                    <FontAwesome5 name="bell" size={24} color="white" />
+                </TouchableOpacity>
+            </View>
+        }
     </>);
 }
 
@@ -99,6 +117,14 @@ const styles = StyleSheet.create({
     refreshButton: {
         position: 'absolute',
         top: 50,
+        right: 10,
+        backgroundColor: '#861F41',
+        padding: 13,
+        borderRadius: 15
+    },
+    alertButton: {
+        position: 'absolute',
+        top: 120,
         right: 10,
         backgroundColor: '#861F41',
         padding: 13,
