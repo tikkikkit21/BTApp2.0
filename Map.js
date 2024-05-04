@@ -95,13 +95,18 @@ export default function Map() {
             {markers}
         </MapView>
         <View style={styles.refreshButton}>
-            <TouchableOpacity onPress={handleRefreshClick}>
+            <TouchableOpacity
+                style={styles.mapButton}
+                onPress={handleRefreshClick}
+            >
                 <FontAwesome name="refresh" size={24} color="white" />
             </TouchableOpacity>
         </View>
         {alerts.length > 0 &&
             <View style={styles.alertButton}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.mapButton}
+                >
                     <FontAwesome5 name="bell" size={24} color="white" />
                 </TouchableOpacity>
             </View>
@@ -114,20 +119,19 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-    refreshButton: {
-        position: 'absolute',
-        top: 50,
-        right: 10,
+    mapButton: {
         backgroundColor: '#861F41',
         padding: 13,
         borderRadius: 15
     },
+    refreshButton: {
+        position: 'absolute',
+        top: 50,
+        right: 10
+    },
     alertButton: {
         position: 'absolute',
         top: 120,
-        right: 10,
-        backgroundColor: '#861F41',
-        padding: 13,
-        borderRadius: 15
+        right: 10
     },
 });
