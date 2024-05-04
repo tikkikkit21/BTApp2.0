@@ -33,7 +33,7 @@ export default function Map() {
         loadBuses();
         refreshTimer.current = setInterval(() => {
             loadBuses();
-        }, 10 * 1000);
+        }, 30 * 1000);
 
         return () => {
             clearInterval(refreshTimer.current);
