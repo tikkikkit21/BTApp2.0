@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
+import Map from './Map';
 import RoutesTab from './tabs/RoutesTab';
+import PlanATripTab from './tabs/PlanATripTab';
 
 const renderScene = SceneMap({
     home: () => null,
-    routes: () => <RoutesTab />,
+    routes: () => null,
     plan: () => null,
     settings: () => null
 });
@@ -58,32 +60,40 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Text>
-                This is the background text
-            </Text>
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={{ width: layout.width }}
-                tabBarPosition='bottom'
-                swipeEnabled={false}
-                animationEnabled={false}
-                renderTabBar={renderTabBar}
-            />
+            <View style={styles.mapContainer}>
+                <Map />
+            </View>
+            {index === 1 && <RoutesTab />}
+            {index === 2 && <PlanATripTab />}
+            <View style={styles.tabContainer}>
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderScene={renderScene}
+                    onIndexChange={setIndex}
+                    initialLayout={{ width: layout.width }}
+                    tabBarPosition='bottom'
+                    swipeEnabled={false}
+                    animationEnabled={false}
+                    renderTabBar={renderTabBar}
+                />
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: 'white',
-        paddingTop: 50
+        flex: 1
+    },
+    mapContainer: {
+        height: "90%"
+    },
+    tabContainer: {
+        height: '10%'
     },
     tabBar: {
         backgroundColor: '#861F41',
-        paddingBottom: 10
+        height: "100%"
     },
     label: {
         flex: 1,
