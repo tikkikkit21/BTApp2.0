@@ -20,14 +20,14 @@ export default function RoutesTab() {
 
     // renders route data into pretty React components
     const renderItem = useCallback(({ item: bus }) => {
-        console.log("item:", bus);
+        const color = `#${bus.RouteColor}`;
         return (
             <View style={styles.routeItem}>
                 <View style={styles.label}>
-                    <FontAwesome6 name="bus-simple" size={30} color={`#${bus.RouteColor}`} />
+                    <FontAwesome6 name="bus-simple" size={30} color={color} />
                     <View>
-                        <Text>{bus.RouteShortName}</Text>
-                        <Text>{bus.RouteName}</Text>
+                        <Text style={{ ...styles.labelTitle, color }}>{bus.RouteShortName}</Text>
+                        <Text style={{ ...styles.labelDescription, color }}>{bus.RouteName}</Text>
                     </View>
                 </View>
                 <AntDesign name="right" size={24} color="black" />
@@ -66,5 +66,11 @@ const styles = StyleSheet.create({
     label: {
         flexDirection: "row",
         alignItems: "center"
+    },
+    labelTitle: {
+        fontSize: 20
+    },
+    labelDescription: {
+        fontSize: 15
     }
 });
