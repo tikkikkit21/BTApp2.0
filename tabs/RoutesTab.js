@@ -1,26 +1,31 @@
-import React, { useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { getCurrentRoutes } from "../controllers/routeController";
 
 export default function RoutesTab() {
-    const snapPoints = useMemo(() => ['27%', '50%', '70%', '95%'], []);
+    const snapPoints = useMemo(() => ['25%', '50%', '75%', '100%'], []);
     const bottomSheetRef = useRef(null);
+    const [routes, setRoutes] = useState([]);
 
-    // const handleSheetChanges = useCallback((index) => {
-    //     console.log('handleSheetChanges', index);
-    // }, []);
-
+    // load in routes
+    useEffect(() => {
+        async function fetchRoutes() {
+            const routeData = await getCurrentRoutes();
+            setRoutes(routeData);
+        }
+        fetchRoutes();
+    }, []);
 
     return (
         <BottomSheet
             ref={bottomSheetRef}
-            // onChange={handleSheetChanges}
             snapPoints={snapPoints}
         >
-            {/* <BottomSheetView style={styles.contentContainer}>
-                <Text>This is the routes list</Text>
-            </BottomSheetView> */}
-            <Text>This is the routes list</Text>
+            <BottomSheetFlatList
+                data={routes}
+                keyExtractor={(_, index) => index}
+            />
         </BottomSheet>
     );
 
