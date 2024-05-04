@@ -25,7 +25,7 @@ export default function RoutesTab() {
             <View style={styles.routeItem}>
                 <View style={styles.label}>
                     <FontAwesome6 name="bus-simple" size={30} color={color} />
-                    <View>
+                    <View style={styles.labelText}>
                         <Text style={{ ...styles.labelTitle, color }}>{bus.RouteShortName}</Text>
                         <Text style={{ ...styles.labelDescription, color }}>{bus.RouteName}</Text>
                     </View>
@@ -66,6 +66,9 @@ const styles = StyleSheet.create({
     label: {
         flexDirection: "row",
         alignItems: "center"
+    },
+    labelText: {
+        marginLeft: 10
     },
     labelTitle: {
         fontSize: 20
