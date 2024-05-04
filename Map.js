@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     mapButton: {
         backgroundColor: '#861F41',
         padding: 13,
-        borderRadius: 15
+        borderRadius: 50
     },
     refreshButton: {
         position: 'absolute',
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
     alertButton: {
         position: 'absolute',
-        top: 120,
+        top: 110,
         right: 10
     },
 });
