@@ -15,17 +15,18 @@ export default function Map() {
     });
 
     // load bus locations
-    useEffect(() => {
-        async function loadBuses() {
-            const busData = await getAllBuses();
+    async function loadBuses() {
+        const busData = await getAllBuses();
 
-            // add color property
-            for (bus of busData) {
-                bus.color = await getColor(bus.RouteShortName);
-            }
-
-            setBuses(busData)
+        // add color property
+        for (bus of busData) {
+            bus.color = await getColor(bus.RouteShortName);
         }
+
+        setBuses(busData)
+    }
+
+    useEffect(() => {
         loadBuses();
     }, []);
 
