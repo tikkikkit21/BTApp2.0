@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
+import { StackActions, useNavigation } from '@react-navigation/native';
+
 import { FontAwesome, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import { getAllBuses } from "./controllers/busController";
 import { getColor } from "./controllers/routeController";
 import { getAlerts } from "./controllers/alertController";
 
-export default function Map() {
+export default function Map(props) {
+    const navigation = useNavigation();
     const [buses, setBuses] = useState([]);
     const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState({
@@ -66,6 +69,11 @@ export default function Map() {
         }
     }
 
+    // when alert button is clicked, navigate to alerts page
+    function handleAlertClick() {
+        navigation.dispatch(StackActions.push("Alerts"))
+    }
+
     const markers = buses.map((bus, index) => {
         return (
             <Marker
@@ -106,6 +114,7 @@ export default function Map() {
             <View style={styles.alertButton}>
                 <TouchableOpacity
                     style={styles.mapButton}
+                    onPress={handleAlertClick}
                 >
                     <FontAwesome5 name="bell" size={24} color="white" />
                 </TouchableOpacity>
