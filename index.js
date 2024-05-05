@@ -12,7 +12,11 @@ function Root() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <NavigationContainer>
-                <Stack.Navigator>
+                <Stack.Navigator
+                    screenOptions={{
+                        headerShown: false
+                    }}
+                >
                     <Stack.Screen name="home" component={App} />
                 </Stack.Navigator>
             </NavigationContainer>
