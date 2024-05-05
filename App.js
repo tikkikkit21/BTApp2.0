@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
-import Map from './Map';
-import RoutesTab from './tabs/RoutesTab';
-import PlanATripTab from './tabs/PlanATripTab';
+import Main from './Main';
 
 const renderScene = SceneMap({
     home: () => null,
@@ -60,10 +58,8 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <View style={styles.mapContainer}>
-                <Map />
-                {index === 1 && <RoutesTab />}
-                {index === 2 && <PlanATripTab />}
+            <View style={styles.mainContainer}>
+                <Main index={index} />
             </View>
             <View style={styles.tabContainer}>
                 <TabView
@@ -85,7 +81,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    mapContainer: {
+    mainContainer: {
         height: "90%"
     },
     tabContainer: {

@@ -9,6 +9,7 @@ import { getColor } from "./controllers/routeController";
 import { getAlerts } from "./controllers/alertController";
 
 export default function Map(props) {
+    console.log("props:", props)
     const navigation = useNavigation();
     const [buses, setBuses] = useState([]);
     const [alerts, setAlerts] = useState([]);
