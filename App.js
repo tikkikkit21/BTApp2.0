@@ -71,7 +71,10 @@ export default function App(props) {
                 >
                     <Stack.Navigator
                         screenOptions={{
-                            headerShown: false
+                            headerShown: false,
+                            contentStyle: {
+                                backgroundColor: "white"
+                            }
                         }}
                     >
                         <Stack.Screen name="home" component={Map} />
