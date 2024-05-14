@@ -3,11 +3,10 @@ import Map from './Map';
 import RoutesTab from './tabs/RoutesTab';
 import PlanATripTab from './tabs/PlanATripTab';
 
-export default function Main({ route, index }) {
-    console.log("route:", route.params.data)
+export default function Main({ route }) {
     return (<>
         <Map />
-        {index === 1 && <RoutesTab />}
-        {index === 2 && <PlanATripTab />}
+        {route.params.index === 1 && <RoutesTab />}
+        {route.params.index === 2 && <PlanATripTab />}
     </>);
 }

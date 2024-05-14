@@ -69,7 +69,7 @@ export default function App() {
                             headerShown: false
                         }}
                     >
-                        <Stack.Screen name="home" component={Main} initialParams={index} />
+                        <Stack.Screen name="home" component={Main} initialParams={{ index }} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </View>
