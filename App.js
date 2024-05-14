@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import Main from './Main';
+
+const Stack = createNativeStackNavigator();
 
 const renderScene = SceneMap({
     home: () => null,
@@ -59,7 +63,15 @@ export default function App() {
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
-                <Main index={index} />
+                <NavigationContainer>
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerShown: false
+                        }}
+                    >
+                        <Stack.Screen name="home" component={Main} initialParams={index} />
+                    </Stack.Navigator>
+                </NavigationContainer>
             </View>
             <View style={styles.tabContainer}>
                 <TabView
