@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import Map from './Map';
 import Alerts from './Alerts';
-import RoutesTab from './tabs/RoutesTab';
-import PlanATripTab from './tabs/PlanATripTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +16,8 @@ const renderScene = SceneMap({
     settings: () => null
 });
 
-export default function App() {
+export default function App(props) {
+    const navigatorRef = useRef();
     const layout = useWindowDimensions();
 
     const [index, setIndex] = useState(0);
@@ -59,6 +58,7 @@ export default function App() {
                         </View>
                     );
                 }}
+                onTabPress={() => { navigatorRef.current?.navigate("home"); }}
             />
         );
     }
@@ -66,19 +66,19 @@ export default function App() {
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
-                <NavigationContainer>
+                <NavigationContainer
+                    ref={navigatorRef}
+                >
                     <Stack.Navigator
                         screenOptions={{
                             headerShown: false
                         }}
                     >
-                        <Stack.Screen name="home" component={Map} initialParams={{ index }} />
+                        <Stack.Screen name="home" component={Map} />
                         <Stack.Screen name="alerts" component={Alerts} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </View>
-            {index === 1 && <RoutesTab />}
-            {index === 2 && <PlanATripTab />}
             <View style={styles.tabContainer}>
                 <TabView
                     navigationState={{ index, routes }}
