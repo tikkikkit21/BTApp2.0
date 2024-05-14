@@ -1,12 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
-import { FontAwesome6, FontAwesome } from '@expo/vector-icons';
-import { getAllBuses } from "./controllers/busController";
-import { getColor } from "./controllers/routeController";
+import { StackActions, useNavigation } from '@react-navigation/native';
 
-export default function Map() {
+import { FontAwesome, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
+import { getAllBuses } from "../controllers/busController";
+import { getColor } from "../controllers/routeController";
+import { getAlerts } from "../controllers/alertController";
+
+export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
+    const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState({
         latitude: 37.227468937500895,
         longitude: -80.42357646125542,
@@ -16,8 +20,8 @@ export default function Map() {
     const refreshTimer = useRef(null);
     const [isOnCooldown, setIsOnCooldown] = useState(false);
 
-    // load bus locations
-    async function loadBuses() {
+    // fetch bus locations
+    async function fetchBuses() {
         const busData = await getAllBuses();
 
         // add color property
@@ -28,11 +32,20 @@ export default function Map() {
         setBuses(busData);
     }
 
+    // fetch alerts
+    useEffect(() => {
+        async function fetchAlerts() {
+            const alertsData = await getAlerts();
+            setAlerts(alertsData);
+        }
+        fetchAlerts();
+    }, []);
+
     // auto-refresh bus locations on live map on a set interval
     useEffect(() => {
-        loadBuses();
+        fetchBuses();
         refreshTimer.current = setInterval(() => {
-            loadBuses();
+            fetchBuses();
         }, 30 * 1000);
 
         return () => {
@@ -44,15 +57,20 @@ export default function Map() {
     function handleRefreshClick() {
         if (!isOnCooldown) {
             clearInterval(refreshTimer.current);
-            refreshTimer.current = setInterval(loadBuses, 10000);
+            refreshTimer.current = setInterval(fetchBuses, 10000);
 
-            loadBuses();
+            fetchBuses();
 
             setIsOnCooldown(true);
             setTimeout(() => {
                 setIsOnCooldown(false);
             }, 5000);
         }
+    }
+
+    // when alert button is clicked, navigate to alerts page
+    function handleAlertClick() {
+        navigation.navigate("alerts");
     }
 
     const markers = buses.map((bus, index) => {
@@ -84,10 +102,23 @@ export default function Map() {
             {markers}
         </MapView>
         <View style={styles.refreshButton}>
-            <TouchableOpacity onPress={handleRefreshClick}>
+            <TouchableOpacity
+                style={styles.mapButton}
+                onPress={handleRefreshClick}
+            >
                 <FontAwesome name="refresh" size={24} color="white" />
             </TouchableOpacity>
         </View>
+        {alerts.length > 0 &&
+            <View style={styles.alertButton}>
+                <TouchableOpacity
+                    style={styles.mapButton}
+                    onPress={handleAlertClick}
+                >
+                    <FontAwesome5 name="bell" size={24} color="white" />
+                </TouchableOpacity>
+            </View>
+        }
     </>);
 }
 
@@ -96,12 +127,19 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    mapButton: {
+        backgroundColor: '#861F41',
+        padding: 13,
+        borderRadius: 50
+    },
     refreshButton: {
         position: 'absolute',
         top: 50,
-        right: 10,
-        backgroundColor: '#861F41',
-        padding: 13,
-        borderRadius: 15
+        right: 10
+    },
+    alertButton: {
+        position: 'absolute',
+        top: 110,
+        right: 10
     },
 });

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
-import Map from './Map';
-import RoutesTab from './tabs/RoutesTab';
-import PlanATripTab from './tabs/PlanATripTab';
+import Map from './components/Map';
+import Alerts from './components/Alerts';
+
+const Stack = createNativeStackNavigator();
 
 const renderScene = SceneMap({
     home: () => null,
@@ -13,10 +16,11 @@ const renderScene = SceneMap({
     settings: () => null
 });
 
-export default function App() {
+export default function App(props) {
+    const navigatorRef = useRef();
     const layout = useWindowDimensions();
 
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'home', title: 'Home' },
         { key: 'routes', title: 'Routes' },
@@ -54,16 +58,29 @@ export default function App() {
                         </View>
                     );
                 }}
+                onTabPress={() => { navigatorRef.current?.navigate("home"); }}
             />
         );
     }
 
     return (
         <View style={styles.container}>
-            <View style={styles.mapContainer}>
-                <Map />
-                {index === 1 && <RoutesTab />}
-                {index === 2 && <PlanATripTab />}
+            <View style={styles.mainContainer}>
+                <NavigationContainer
+                    ref={navigatorRef}
+                >
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerShown: false,
+                            contentStyle: {
+                                backgroundColor: "white"
+                            }
+                        }}
+                    >
+                        <Stack.Screen name="home" component={Map} />
+                        <Stack.Screen name="alerts" component={Alerts} />
+                    </Stack.Navigator>
+                </NavigationContainer>
             </View>
             <View style={styles.tabContainer}>
                 <TabView
@@ -85,7 +102,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    mapContainer: {
+    mainContainer: {
         height: "90%"
     },
     tabContainer: {
