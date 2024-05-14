@@ -19,16 +19,20 @@ export default function Alerts({ navigation, route }) {
         fetchAlerts();
     }, []);
 
+    // this indicates whether to display list of alerts or the specific alert
+    // itself
     useEffect(() => {
         if (route?.params?.alert) {
             setSpecificAlert(route.params.alert);
         }
     }, []);
 
+    // handles clicking a specific alert to learn more
     function goToAlert(alert) {
         navigation.dispatch(StackActions.push("alerts", { alert }))
     }
 
+    // converts comma-delimited lists into bullet points
     function processList(listString) {
         const items = listString.split(",");
         const newline = "\n • "
@@ -36,6 +40,7 @@ export default function Alerts({ navigation, route }) {
         return newline + items.join(newline);
     }
 
+    // convert alert data into views
     const alertViews = alerts.map(alert => {
         return (
             <TouchableOpacity key={alert.AlertID} onPress={() => goToAlert(alert)}>
@@ -50,6 +55,7 @@ export default function Alerts({ navigation, route }) {
         );
     });
 
+    // displays the alert detail section
     if (specificAlert) {
         return (
             <View style={alertStyles.container}>
@@ -65,6 +71,9 @@ export default function Alerts({ navigation, route }) {
         );
     }
 
+    // empty alerts data means it's still being fetched. We're guaranteed to
+    // have alerts since otherwise, the button would not display on the map in
+    // the first place
     if (alerts.length === 0) {
         return (
             <View style={styles.container}>
@@ -73,6 +82,7 @@ export default function Alerts({ navigation, route }) {
         );
     }
 
+    // normal alerts list
     return (
         <ScrollView>
             <View style={styles.container}>
