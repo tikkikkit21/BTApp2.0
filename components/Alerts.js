@@ -120,6 +120,7 @@ const alertStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         paddingHorizontal: 15,
+        paddingTop: 50
     },
     header: {
         flexDirection: "row",
