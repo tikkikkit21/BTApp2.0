@@ -4,8 +4,8 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
-import Map from './Map';
-import Alerts from './Alerts';
+import Map from './components/Map';
+import Alerts from './components/Alerts';
 
 const Stack = createNativeStackNavigator();
 

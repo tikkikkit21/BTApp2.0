@@ -4,9 +4,9 @@ import MapView, { Marker } from 'react-native-maps';
 import { StackActions, useNavigation } from '@react-navigation/native';
 
 import { FontAwesome, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
-import { getAllBuses } from "./controllers/busController";
-import { getColor } from "./controllers/routeController";
-import { getAlerts } from "./controllers/alertController";
+import { getAllBuses } from "../controllers/busController";
+import { getColor } from "../controllers/routeController";
+import { getAlerts } from "../controllers/alertController";
 
 export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
