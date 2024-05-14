@@ -14,8 +14,8 @@ export async function getAlerts() {
     if (hasCached) return ALERTS;
 
     // use the below code instead in production
-    // const { data } = await axios.get(`${ROOT}/GetActiveAlerts?alertTypes=&alertCauses=&alertEffects=`);
-    const { data } = await axios.get(`${ROOT}/GetAllAlerts`);
+    const { data } = await axios.get(`${ROOT}/GetActiveAlerts?alertTypes=&alertCauses=&alertEffects=`);
+    // const { data } = await axios.get(`${ROOT}/GetAllAlerts`);
     const json = xml2js(data, { compact: true });
 
     let alerts = json.DocumentElement.ActiveAlerts;
