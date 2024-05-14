@@ -8,9 +8,7 @@ import { getAllBuses } from "./controllers/busController";
 import { getColor } from "./controllers/routeController";
 import { getAlerts } from "./controllers/alertController";
 
-export default function Map(props) {
-    console.log("props:", props)
-    const navigation = useNavigation();
+export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
     const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState({
@@ -72,7 +70,7 @@ export default function Map(props) {
 
     // when alert button is clicked, navigate to alerts page
     function handleAlertClick() {
-        navigation.dispatch(StackActions.push("Alerts"))
+        navigation.navigate("alerts");
     }
 
     const markers = buses.map((bus, index) => {

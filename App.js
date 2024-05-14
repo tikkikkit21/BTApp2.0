@@ -4,7 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
-import Main from './Main';
+import Map from './Map';
+import Alerts from './Alerts';
+import RoutesTab from './tabs/RoutesTab';
+import PlanATripTab from './tabs/PlanATripTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +21,7 @@ const renderScene = SceneMap({
 export default function App() {
     const layout = useWindowDimensions();
 
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'home', title: 'Home' },
         { key: 'routes', title: 'Routes' },
@@ -69,10 +72,13 @@ export default function App() {
                             headerShown: false
                         }}
                     >
-                        <Stack.Screen name="home" component={Main} initialParams={{ index }} />
+                        <Stack.Screen name="home" component={Map} initialParams={{ index }} />
+                        <Stack.Screen name="alerts" component={Alerts} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </View>
+            {index === 1 && <RoutesTab />}
+            {index === 2 && <PlanATripTab />}
             <View style={styles.tabContainer}>
                 <TabView
                     navigationState={{ index, routes }}
