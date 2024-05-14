@@ -6,6 +6,8 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import Map from './components/Map';
 import Alerts from './components/Alerts';
+import RoutesTab from './components/tabs/RoutesTab';
+import PlanATripTab from './components/tabs/PlanATripTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -82,6 +84,8 @@ export default function App(props) {
                     </Stack.Navigator>
                 </NavigationContainer>
             </View>
+            {index === 1 && <RoutesTab />}
+            {index === 2 && <PlanATripTab />}
             <View style={styles.tabContainer}>
                 <TabView
                     navigationState={{ index, routes }}
