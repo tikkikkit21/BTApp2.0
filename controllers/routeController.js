@@ -10,10 +10,10 @@ const ROUTE_COLORS = {};
 const ROUTE_POLYLINES = {};
 
 /**
- * Fetches info on current routes
+ * Fetches info on all current routes
  * @returns list of routes
  */
-export async function getCurrentRoutes() {
+export async function getAllRoutes() {
     if (CURRENT_ROUTES.length > 0) return CURRENT_ROUTES;
 
     const { data } = await axios.get(`${ROOT}/GetCurrentRoutes`);
@@ -36,7 +36,7 @@ export async function getCurrentRoutes() {
  * @returns route info from a route name
  */
 export async function getRoute(routeName) {
-    if (CURRENT_ROUTES.length === 0) await getCurrentRoutes();
+    if (CURRENT_ROUTES.length === 0) await getAllRoutes();
 
     return CURRENT_ROUTES.find(r => r.RouteShortName === routeName) || {};
 }
@@ -47,7 +47,7 @@ export async function getRoute(routeName) {
  * @returns color of the route or "#000" by default
  */
 export async function getColor(routeName) {
-    if (CURRENT_ROUTES.length === 0) await getCurrentRoutes();
+    if (CURRENT_ROUTES.length === 0) await getAllRoutes();
 
     const color = ROUTE_COLORS[routeName];
     return color
