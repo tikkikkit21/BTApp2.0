@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
-import { StackActions, useNavigation } from '@react-navigation/native';
 
 import { FontAwesome, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import { getAllBuses } from "../controllers/busController";
+import { getStops } from "../controllers/stopController";
 import { getColor } from "../controllers/routeController";
 import { getAlerts } from "../controllers/alertController";
 
@@ -75,8 +75,9 @@ export default function Map({ navigation }) {
 
     // create bus icons
     function createBusMarkers() {
-        function handleSelect() {
-            console.log("bus clicked")
+        async function handleSelect(routeName) {
+            const stops = await getStops(routeName);
+            console.log("stops:", stops)
         }
 
         return buses.map((bus, index) => {
@@ -90,7 +91,7 @@ export default function Map({ navigation }) {
                     title={bus.RouteShortName}
                     description={`Last stop: ${bus.LastStopName}`}
                     pointerEvents="auto"
-                    onSelect={handleSelect}
+                    onSelect={() => handleSelect(bus.RouteShortName)}
                 >
                     <View>
                         <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
