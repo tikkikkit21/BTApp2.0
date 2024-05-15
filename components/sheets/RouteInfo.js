@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import BottomSheet from '@gorhom/bottom-sheet';
 import { getRoute } from "../../controllers/routeController";
 
-export default function RouteInfo({ bus }) {
+export default function RouteInfo({ bus, canShow }) {
     const [route, setRoute] = useState({});
     const snapPoints = useMemo(() => ['27%', '50%', '70%', '95%'], []);
     const bottomSheetRef = useRef(null);
@@ -18,10 +18,20 @@ export default function RouteInfo({ bus }) {
         fetchRoute();
     }, [bus]);
 
+    useEffect(() => {
+        if (canShow === false) {
+            bottomSheetRef.current.close();
+        }
+        else {
+            bottomSheetRef.current.snapToIndex(0);
+        }
+    });
+
     return (
         <BottomSheet
             ref={bottomSheetRef}
             snapPoints={snapPoints}
+            enablePanDownToClose={true}
         >
             <View style={styles.container}>
                 <Text style={{ ...styles.title, color: bus.color }}>{bus.RouteShortName} #{bus.AgencyVehicleName}</Text>

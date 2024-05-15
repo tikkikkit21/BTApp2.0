@@ -20,6 +20,7 @@ export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
     const [routeCoords, setRouteCoords] = useState([]);
     const [currBus, setCurrBus] = useState(null);
+    const [canShow, setCanShow] = useState(false);
 
     const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState(BURRUSS_COORDS);
@@ -85,6 +86,7 @@ export default function Map({ navigation }) {
             const poly = await getRoutePolyline(bus.PatternName);
             setRouteCoords(poly);
             setCurrBus(bus);
+            setCanShow(true);
         }
 
         return buses.map((bus, index) => {
@@ -99,6 +101,7 @@ export default function Map({ navigation }) {
                     description={`Last stop: ${bus.LastStopName}`}
                     pointerEvents="auto"
                     onSelect={() => handleSelect(bus)}
+                    onDeselect={() => setCanShow(false)}
                 >
                     <View>
                         <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
@@ -161,7 +164,7 @@ export default function Map({ navigation }) {
             {createStopMarkers()}
             {createRouteLine()}
         </MapView>
-        {currBus && <RouteInfo bus={currBus} />}
+        <RouteInfo bus={currBus} canShow={canShow} />
         <View style={styles.refreshButton}>
             <TouchableOpacity
                 style={styles.mapButton}
