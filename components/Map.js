@@ -73,24 +73,32 @@ export default function Map({ navigation }) {
         navigation.navigate("alerts");
     }
 
-    const markers = buses.map((bus, index) => {
-        return (
-            <Marker
-                key={index}
-                coordinate={{
-                    latitude: bus.Latitude,
-                    longitude: bus.Longitude
-                }}
-                title={bus.RouteShortName}
-                description={`Last stop: ${bus.LastStopName}`}
-                pointerEvents="auto"
-            >
-                <View>
-                    <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
-                </View>
-            </Marker>
-        );
-    });
+    // create bus icons
+    function createBusMarkers() {
+        function handleSelect() {
+            console.log("bus clicked")
+        }
+
+        return buses.map((bus, index) => {
+            return (
+                <Marker
+                    key={index}
+                    coordinate={{
+                        latitude: bus.Latitude,
+                        longitude: bus.Longitude
+                    }}
+                    title={bus.RouteShortName}
+                    description={`Last stop: ${bus.LastStopName}`}
+                    pointerEvents="auto"
+                    onSelect={handleSelect}
+                >
+                    <View>
+                        <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
+                    </View>
+                </Marker>
+            );
+        });
+    }
 
     return (<>
         <MapView
@@ -99,7 +107,7 @@ export default function Map({ navigation }) {
             onRegionChangeComplete={(region) => setMapRegion(region)}
             showsUserLocation={true}
         >
-            {markers}
+            {createBusMarkers()}
         </MapView>
         <View style={styles.refreshButton}>
             <TouchableOpacity
