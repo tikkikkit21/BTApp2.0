@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { FontAwesome, FontAwesome5, FontAwesome6, Octicons } from '@expo/vector-icons';
 import { getAllBuses } from "../controllers/busController";
-import { getStops } from "../controllers/stopController";
 import { getColor, getRoutePolyline } from "../controllers/routeController";
 import { getAlerts } from "../controllers/alertController";
 
@@ -16,7 +15,6 @@ const BURRUSS_COORDS = {
 
 export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
-    const [stops, setStops] = useState([]);
     const [routeCoords, setRouteCoords] = useState([]);
     const [currBus, setCurrBus] = useState({});
 
@@ -83,9 +81,6 @@ export default function Map({ navigation }) {
         async function handleSelect(bus) {
             setCurrBus(bus);
 
-            const stopData = await getStops(bus.RouteShortName);
-            setStops(stopData);
-
             const poly = await getRoutePolyline(bus.RouteShortName);
             setRouteCoords(poly);
         }
@@ -113,22 +108,28 @@ export default function Map({ navigation }) {
 
     // create stop markers
     function createStopMarkers() {
-        return stops.map(stop => {
-            return <Marker
-                key={stop.StopCode}
-                coordinate={{
-                    latitude: stop.Latitude,
-                    longitude: stop.Longitude
-                }}
-                title={String(stop.StopCode)}
-                description={stop.StopName}
-                pointerEvents="auto"
-            >
-                <View>
-                    <Octicons name="dot-fill" size={30} color={currBus?.color || "black"} />
-                </View>
-            </Marker>
-        });
+        return routeCoords
+            .filter(stop => stop.IsBusStop === "Y")
+            .map(stop => {
+                const icon = stop.IsTimePoint === "Y"
+                    ? <FontAwesome name="star" size={20} color={currBus?.color || "black"} />
+                    : <Octicons name="dot-fill" size={30} color={currBus?.color || "black"} />;
+
+                return <Marker
+                    key={stop.Rank}
+                    coordinate={{
+                        latitude: stop.Latitude,
+                        longitude: stop.Longitude
+                    }}
+                    title={String(stop.StopCode)}
+                    description={stop.StopName}
+                    pointerEvents="auto"
+                >
+                    <View>
+                        {icon}
+                    </View>
+                </Marker>
+            });
     }
 
     // create route line
