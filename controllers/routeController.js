@@ -14,7 +14,7 @@ const ROUTE_POLYLINES = {};
  * @returns list of routes
  */
 export async function getCurrentRoutes() {
-    if (CURRENT_ROUTES.length > 1) return CURRENT_ROUTES;
+    if (CURRENT_ROUTES.length > 0) return CURRENT_ROUTES;
 
     const { data } = await axios.get(`${ROOT}/GetCurrentRoutes`);
     const json = xml2js(data, { compact: true });
