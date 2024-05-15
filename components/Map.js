@@ -10,6 +10,7 @@ import { getAlerts } from "../controllers/alertController";
 
 export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
+    const [stops, setStops] = useState([]);
     const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState({
         latitude: 37.227468937500895,
@@ -76,8 +77,8 @@ export default function Map({ navigation }) {
     // create bus icons
     function createBusMarkers() {
         async function handleSelect(routeName) {
-            const stops = await getStops(routeName);
-            console.log("stops:", stops)
+            const stopData = await getStops(routeName);
+            setStops(stopData);
         }
 
         return buses.map((bus, index) => {
