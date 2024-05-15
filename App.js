@@ -8,6 +8,7 @@ import Map from './components/Map';
 import Alerts from './components/Alerts';
 import RoutesTab from './components/sheets/RoutesList';
 import PlanATripTab from './components/sheets/PlanATrip';
+import RouteInfo from './components/sheets/RouteInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -84,8 +85,9 @@ export default function App(props) {
                     </Stack.Navigator>
                 </NavigationContainer>
             </View>
-            {index === 1 && <RoutesTab />}
-            {index === 2 && <PlanATripTab />}
+            {/* {index === 1 && <RoutesTab />}
+            {index === 2 && <PlanATripTab />} */}
+            {<RouteInfo />}
             <View style={styles.tabContainer}>
                 <TabView
                     navigationState={{ index, routes }}
