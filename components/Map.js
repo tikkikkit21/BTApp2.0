@@ -7,17 +7,21 @@ import { getStops } from "../controllers/stopController";
 import { getColor, getRoutePolyline } from "../controllers/routeController";
 import { getAlerts } from "../controllers/alertController";
 
+const BURRUSS_COORDS = {
+    latitude: 37.227468937500895,
+    longitude: -80.42357646125542,
+    latitudeDelta: 0.051202637986392574,
+    longitudeDelta: 0.03720943536600885,
+}
+
 export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
     const [stops, setStops] = useState([]);
     const [routeCoords, setRouteCoords] = useState([]);
+    const [currBus, setCurrBus] = useState({});
+
     const [alerts, setAlerts] = useState([]);
-    const [mapRegion, setMapRegion] = useState({
-        latitude: 37.227468937500895,
-        longitude: -80.42357646125542,
-        latitudeDelta: 0.051202637986392574,
-        longitudeDelta: 0.03720943536600885,
-    });
+    const [mapRegion, setMapRegion] = useState(BURRUSS_COORDS);
     const refreshTimer = useRef(null);
     const [isOnCooldown, setIsOnCooldown] = useState(false);
 
@@ -76,11 +80,13 @@ export default function Map({ navigation }) {
 
     // create bus icons
     function createBusMarkers() {
-        async function handleSelect(routeName) {
-            const stopData = await getStops(routeName);
+        async function handleSelect(bus) {
+            setCurrBus(bus);
+
+            const stopData = await getStops(bus.RouteShortName);
             setStops(stopData);
 
-            const poly = await getRoutePolyline(routeName);
+            const poly = await getRoutePolyline(bus.RouteShortName);
             setRouteCoords(poly);
         }
 
@@ -95,7 +101,7 @@ export default function Map({ navigation }) {
                     title={bus.RouteShortName}
                     description={`Last stop: ${bus.LastStopName}`}
                     pointerEvents="auto"
-                    onSelect={() => handleSelect(bus.RouteShortName)}
+                    onSelect={() => handleSelect(bus)}
                 >
                     <View>
                         <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
@@ -119,7 +125,7 @@ export default function Map({ navigation }) {
                 pointerEvents="auto"
             >
                 <View>
-                    <Octicons name="dot-fill" size={30} color="black" />
+                    <Octicons name="dot-fill" size={30} color={currBus?.color || "black"} />
                 </View>
             </Marker>
         });
@@ -136,7 +142,7 @@ export default function Map({ navigation }) {
 
         return <Polyline
             coordinates={coords}
-            strokeColor="black"
+            strokeColor={currBus?.color || "black"}
             strokeWidth={3}
         />;
     }
