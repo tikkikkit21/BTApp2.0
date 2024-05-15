@@ -164,7 +164,7 @@ export default function Map({ navigation }) {
             {createStopMarkers()}
             {createRouteLine()}
         </MapView>
-        <RouteInfo bus={currBus} canShow={canShow} />
+        {currBus && <RouteInfo bus={currBus} canShow={canShow} />}
         <View style={styles.refreshButton}>
             <TouchableOpacity
                 style={styles.mapButton}
