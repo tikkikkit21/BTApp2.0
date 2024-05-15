@@ -31,6 +31,17 @@ export async function getCurrentRoutes() {
 }
 
 /**
+ * Fetches info on a specific route
+ * @param {string} routeName route short name (ex: "HWA")
+ * @returns route info from a route name
+ */
+export async function getRoute(routeName) {
+    if (CURRENT_ROUTES.length === 0) await getCurrentRoutes();
+
+    return CURRENT_ROUTES.find(r => r.RouteShortName === routeName) || {};
+}
+
+/**
  * Get color of a route, returns black if not found
  * @param {string} routeName route short name (ex: "HWA")
  * @returns color of the route or "#000" by default
