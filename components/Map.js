@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { FontAwesome, FontAwesome5, FontAwesome6, Octicons } from '@expo/vector-icons';
+
+import RouteInfo from "./sheets/RouteInfo";
+
 import { getAllBuses } from "../controllers/busController";
 import { getColor, getRoutePolyline } from "../controllers/routeController";
 import { getAlerts } from "../controllers/alertController";
@@ -158,6 +161,7 @@ export default function Map({ navigation }) {
             {createStopMarkers()}
             {createRouteLine()}
         </MapView>
+        <RouteInfo />
         <View style={styles.refreshButton}>
             <TouchableOpacity
                 style={styles.mapButton}
