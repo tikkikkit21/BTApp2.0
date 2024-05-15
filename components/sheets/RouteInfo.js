@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import BottomSheet from '@gorhom/bottom-sheet';
+import { FontAwesome6 } from "@expo/vector-icons"
 import { getRoute } from "../../controllers/routeController";
 
 export default function RouteInfo({ bus, canShow }) {
     const [route, setRoute] = useState({});
-    const snapPoints = useMemo(() => ['27%', '50%', '70%', '95%'], []);
+    const snapPoints = useMemo(() => ['50%', '95%'], []);
     const bottomSheetRef = useRef(null);
 
     // fetch route data for the bus
@@ -34,7 +35,15 @@ export default function RouteInfo({ bus, canShow }) {
             enablePanDownToClose={true}
         >
             <View style={styles.container}>
-                <Text style={{ ...styles.title, color: bus.color }}>{bus.RouteShortName} #{bus.AgencyVehicleName}</Text>
+                <View style={styles.header}>
+                    <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
+                    <Text style={{ ...styles.title, color: bus.color }}>{route.RouteName}</Text>
+                </View>
+                <View style={styles.body}>
+                    <Text>Capacity: {bus.PercentOfCapacity}%</Text>
+                    <Text>Bus ID: {bus.AgencyVehicleName}</Text>
+                    <Text>Last Stop: {bus.LastStopName} (#{bus.StopCode})</Text>
+                </View>
             </View>
         </BottomSheet>
     );
@@ -44,7 +53,15 @@ const styles = StyleSheet.create({
     container: {
         padding: 10
     },
+    header: {
+        flexDirection: "row",
+        alignItems: "center"
+    },
     title: {
-        fontSize: 20
+        fontSize: 30,
+        marginLeft: 10
+    },
+    body: {
+        marginTop: 10
     }
 });
