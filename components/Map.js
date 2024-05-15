@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 
-import { FontAwesome, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, FontAwesome6, Octicons } from '@expo/vector-icons';
 import { getAllBuses } from "../controllers/busController";
 import { getStops } from "../controllers/stopController";
 import { getColor } from "../controllers/routeController";
@@ -102,6 +102,26 @@ export default function Map({ navigation }) {
         });
     }
 
+    // create stop markers
+    function createStopMarkers() {
+        return stops.map(stop =>
+            <Marker
+                key={stop.StopCode}
+                coordinate={{
+                    latitude: stop.Latitude,
+                    longitude: stop.Longitude
+                }}
+                title={stop.StopCode}
+                description={stop.StopName}
+                pointerEvents="auto"
+            >
+                <View>
+                    <Octicons name="dot-fill" size={30} color="black" />
+                </View>
+            </Marker>
+        );
+    }
+
     return (<>
         <MapView
             style={styles.map}
@@ -110,6 +130,7 @@ export default function Map({ navigation }) {
             showsUserLocation={true}
         >
             {createBusMarkers()}
+            {createStopMarkers()}
         </MapView>
         <View style={styles.refreshButton}>
             <TouchableOpacity
