@@ -3,8 +3,11 @@ import { xml2js } from "xml-js";
 import { formatTextProperty } from "./util";
 
 const ROOT = process.env.BT_API_ROOT;
+
+// caches
 const CURRENT_ROUTES = [];
 const ROUTE_COLORS = {};
+const ROUTE_POLYLINES = {};
 
 /**
  * Fetches info on current routes
@@ -39,4 +42,23 @@ export async function getColor(routeName) {
     return color
         ? `#${ROUTE_COLORS[routeName]}`
         : "#000";
+}
+
+/**
+ * Get polyline coordinates for a route
+ * @param {string} routeName route short name (ex: "HWA")
+ * @returns array of stop objects
+ */
+export async function getRoutePolyline(routeName) {
+    if (ROUTE_POLYLINES[routeName]) return ROUTE_POLYLINES[routeName];
+
+    const { data } = await axios.get(`${ROOT}/GetScheduledPatternPoints?patternName=${routeName}`);
+    const json = xml2js(data, { compact: true });
+
+    let polyData = json.DocumentElement;
+    polyData = polyData[Object.keys(polyData)[0]];
+    polyData = polyData.map(p => formatTextProperty(p));
+    ROUTE_POLYLINES[routeName] = polyData;
+
+    return polyData;
 }
