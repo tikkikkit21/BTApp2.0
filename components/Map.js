@@ -104,14 +104,14 @@ export default function Map({ navigation }) {
 
     // create stop markers
     function createStopMarkers() {
-        return stops.map(stop =>
-            <Marker
+        return stops.map(stop => {
+            return <Marker
                 key={stop.StopCode}
                 coordinate={{
                     latitude: stop.Latitude,
                     longitude: stop.Longitude
                 }}
-                title={stop.StopCode}
+                title={String(stop.StopCode)}
                 description={stop.StopName}
                 pointerEvents="auto"
             >
@@ -119,7 +119,7 @@ export default function Map({ navigation }) {
                     <Octicons name="dot-fill" size={30} color="black" />
                 </View>
             </Marker>
-        );
+        });
     }
 
     return (<>
