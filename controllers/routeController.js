@@ -55,7 +55,8 @@ export async function getRoutePolyline(routeName) {
     const { data } = await axios.get(`${ROOT}/GetScheduledPatternPoints?patternName=${routeName}`);
     const json = xml2js(data, { compact: true });
 
-    let polyData = json.DocumentElement[routeName];
+    let polyData = json.DocumentElement;
+    polyData = polyData[Object.keys(polyData)[0]];
     polyData = polyData.map(p => formatTextProperty(p));
     ROUTE_POLYLINES[routeName] = polyData;
 

@@ -79,7 +79,7 @@ export default function Map({ navigation }) {
     // create bus icons
     function createBusMarkers() {
         async function handleSelect(bus) {
-            const poly = await getRoutePolyline(bus.RouteShortName);
+            const poly = await getRoutePolyline(bus.PatternName);
             setRouteCoords(poly);
             setCurrBus(bus);
         }
