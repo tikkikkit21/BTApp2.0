@@ -19,7 +19,7 @@ const BURRUSS_COORDS = {
 export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
     const [routeCoords, setRouteCoords] = useState([]);
-    const [currBus, setCurrBus] = useState({});
+    const [currBus, setCurrBus] = useState(null);
 
     const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState(BURRUSS_COORDS);
@@ -161,7 +161,7 @@ export default function Map({ navigation }) {
             {createStopMarkers()}
             {createRouteLine()}
         </MapView>
-        <RouteInfo />
+        {currBus && <RouteInfo />}
         <View style={styles.refreshButton}>
             <TouchableOpacity
                 style={styles.mapButton}
