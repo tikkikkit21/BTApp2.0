@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import MapView, { Marker } from 'react-native-maps';
-
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import { FontAwesome, FontAwesome5, FontAwesome6, Octicons } from '@expo/vector-icons';
 import { getAllBuses } from "../controllers/busController";
 import { getStops } from "../controllers/stopController";
-import { getColor } from "../controllers/routeController";
+import { getColor, getRoutePolyline } from "../controllers/routeController";
 import { getAlerts } from "../controllers/alertController";
 
 export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
     const [stops, setStops] = useState([]);
+    const [routeCoords, setRouteCoords] = useState([]);
     const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState({
         latitude: 37.227468937500895,
@@ -79,6 +79,9 @@ export default function Map({ navigation }) {
         async function handleSelect(routeName) {
             const stopData = await getStops(routeName);
             setStops(stopData);
+
+            const poly = await getRoutePolyline(routeName);
+            setRouteCoords(poly);
         }
 
         return buses.map((bus, index) => {
@@ -122,6 +125,22 @@ export default function Map({ navigation }) {
         });
     }
 
+    // create route line
+    function createRouteLine() {
+        const coords = routeCoords.map(c => {
+            return {
+                latitude: c.Latitude,
+                longitude: c.Longitude
+            };
+        });
+
+        return <Polyline
+            coordinates={coords}
+            strokeColor="black"
+            strokeWidth={3}
+        />;
+    }
+
     return (<>
         <MapView
             style={styles.map}
@@ -131,6 +150,7 @@ export default function Map({ navigation }) {
         >
             {createBusMarkers()}
             {createStopMarkers()}
+            {createRouteLine()}
         </MapView>
         <View style={styles.refreshButton}>
             <TouchableOpacity
