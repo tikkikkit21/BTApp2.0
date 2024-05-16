@@ -82,13 +82,6 @@ export default function Map({ navigation }) {
 
     // create bus icons
     function createBusMarkers() {
-        async function handleSelect(bus) {
-            const poly = await getRoutePolyline(bus.PatternName);
-            setRouteCoords(poly);
-            setCurrBus(bus);
-            setCanShow(true);
-        }
-
         return buses.map((bus, index) => {
             return (
                 <Marker
@@ -101,7 +94,7 @@ export default function Map({ navigation }) {
                     description={`Last stop: ${bus.LastStopName}`}
                     pointerEvents="auto"
                     onSelect={() => handleSelect(bus)}
-                    onDeselect={() => setCanShow(false)}
+                    onDeselect={handleDeselect}
                 >
                     <View>
                         <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
@@ -109,6 +102,18 @@ export default function Map({ navigation }) {
                 </Marker>
             );
         });
+    }
+
+    // handlers for bus select/deselect
+    async function handleSelect(bus) {
+        const poly = await getRoutePolyline(bus.PatternName);
+        setRouteCoords(poly);
+        setCurrBus(bus);
+        setCanShow(true);
+    }
+
+    async function handleDeselect() {
+        setCanShow(false);
     }
 
     // create stop markers
@@ -164,7 +169,11 @@ export default function Map({ navigation }) {
             {createStopMarkers()}
             {createRouteLine()}
         </MapView>
-        {currBus && <RouteInfo bus={currBus} canShow={canShow} />}
+        {currBus && <RouteInfo
+            bus={currBus}
+            canShow={canShow}
+            onClose={handleDeselect}
+        />}
         <View style={styles.refreshButton}>
             <TouchableOpacity
                 style={styles.mapButton}

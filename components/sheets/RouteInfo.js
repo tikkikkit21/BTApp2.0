@@ -4,7 +4,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { FontAwesome6 } from "@expo/vector-icons"
 import { getRoute } from "../../controllers/routeController";
 
-export default function RouteInfo({ bus, canShow }) {
+export default function RouteInfo({ bus, canShow, onClose }) {
     const [route, setRoute] = useState({});
     const snapPoints = useMemo(() => ['50%', '95%'], []);
     const bottomSheetRef = useRef(null);
@@ -33,6 +33,11 @@ export default function RouteInfo({ bus, canShow }) {
             ref={bottomSheetRef}
             snapPoints={snapPoints}
             enablePanDownToClose={true}
+            onChange={(index) => {
+                if (index === -1) {
+                    onClose();
+                }
+            }}
         >
             <View style={styles.container}>
                 <View style={styles.header}>
