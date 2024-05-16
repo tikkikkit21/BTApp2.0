@@ -45,7 +45,7 @@ export default function RouteInfo({ bus, canShow, onClose }) {
                     <Text style={{ ...styles.title, color: bus.color }}>{route.RouteName}</Text>
                 </View>
                 <View style={styles.body}>
-                    <Text>Capacity: {bus.PercentOfCapacity}%</Text>
+                    <Text>Capacity: {bus.PercentOfCapacity || "Unknown"}%</Text>
                     <Text>Bus ID: {bus.AgencyVehicleName}</Text>
                     <Text>Last Stop: {bus.LastStopName} (#{bus.StopCode})</Text>
                 </View>
