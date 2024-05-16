@@ -111,7 +111,7 @@ export default function Map({ navigation }) {
         setMapRegion(prevRegion => {
             return {
                 ...prevRegion,
-                latitude: bus.Latitude - 0.012,
+                latitude: bus.Latitude - 0.023,
                 longitude: bus.Longitude
             };
         })
