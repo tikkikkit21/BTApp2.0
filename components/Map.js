@@ -108,6 +108,13 @@ export default function Map({ navigation }) {
         setRouteCoords(poly);
         setCurrBus(bus);
         setCanShow(true);
+        setMapRegion(prevRegion => {
+            return {
+                ...prevRegion,
+                latitude: bus.Latitude - 0.012,
+                longitude: bus.Longitude
+            };
+        })
     }
 
     async function handleDeselect() {
