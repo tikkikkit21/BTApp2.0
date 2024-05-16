@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { FontAwesome, FontAwesome5, FontAwesome6, Octicons } from '@expo/vector-icons';
+
+import RouteInfo from "./sheets/RouteInfo";
+
 import { getAllBuses } from "../controllers/busController";
 import { getColor, getRoutePolyline } from "../controllers/routeController";
 import { getAlerts } from "../controllers/alertController";
@@ -16,7 +19,8 @@ const BURRUSS_COORDS = {
 export default function Map({ navigation }) {
     const [buses, setBuses] = useState([]);
     const [routeCoords, setRouteCoords] = useState([]);
-    const [currBus, setCurrBus] = useState({});
+    const [currBus, setCurrBus] = useState(null);
+    const [canShow, setCanShow] = useState(false);
 
     const [alerts, setAlerts] = useState([]);
     const [mapRegion, setMapRegion] = useState(BURRUSS_COORDS);
@@ -78,12 +82,6 @@ export default function Map({ navigation }) {
 
     // create bus icons
     function createBusMarkers() {
-        async function handleSelect(bus) {
-            const poly = await getRoutePolyline(bus.PatternName);
-            setRouteCoords(poly);
-            setCurrBus(bus);
-        }
-
         return buses.map((bus, index) => {
             return (
                 <Marker
@@ -92,10 +90,9 @@ export default function Map({ navigation }) {
                         latitude: bus.Latitude,
                         longitude: bus.Longitude
                     }}
-                    title={bus.RouteShortName}
-                    description={`Last stop: ${bus.LastStopName}`}
                     pointerEvents="auto"
                     onSelect={() => handleSelect(bus)}
+                    onDeselect={handleDeselect}
                 >
                     <View>
                         <FontAwesome6 name="bus-simple" size={30} color={bus.color} />
@@ -103,6 +100,25 @@ export default function Map({ navigation }) {
                 </Marker>
             );
         });
+    }
+
+    // handlers for bus select/deselect
+    async function handleSelect(bus) {
+        const poly = await getRoutePolyline(bus.PatternName);
+        setRouteCoords(poly);
+        setCurrBus(bus);
+        setCanShow(true);
+        setMapRegion(prevRegion => {
+            return {
+                ...prevRegion,
+                latitude: bus.Latitude - 0.023,
+                longitude: bus.Longitude
+            };
+        })
+    }
+
+    async function handleDeselect() {
+        setCanShow(false);
     }
 
     // create stop markers
@@ -158,6 +174,11 @@ export default function Map({ navigation }) {
             {createStopMarkers()}
             {createRouteLine()}
         </MapView>
+        {currBus && <RouteInfo
+            bus={currBus}
+            canShow={canShow}
+            onClose={handleDeselect}
+        />}
         <View style={styles.refreshButton}>
             <TouchableOpacity
                 style={styles.mapButton}

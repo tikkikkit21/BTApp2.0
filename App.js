@@ -6,8 +6,8 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Entypo, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import Map from './components/Map';
 import Alerts from './components/Alerts';
-import RoutesTab from './components/tabs/RoutesTab';
-import PlanATripTab from './components/tabs/PlanATripTab';
+import RoutesTab from './components/sheets/RoutesList';
+import PlanATripTab from './components/sheets/PlanATrip';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +18,7 @@ const renderScene = SceneMap({
     settings: () => null
 });
 
-export default function App(props) {
+export default function App() {
     const navigatorRef = useRef();
     const layout = useWindowDimensions();
 

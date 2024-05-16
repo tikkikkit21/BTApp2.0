@@ -10,11 +10,11 @@ const ROUTE_COLORS = {};
 const ROUTE_POLYLINES = {};
 
 /**
- * Fetches info on current routes
+ * Fetches info on all current routes
  * @returns list of routes
  */
-export async function getCurrentRoutes() {
-    if (CURRENT_ROUTES.length > 1) return CURRENT_ROUTES;
+export async function getAllRoutes() {
+    if (CURRENT_ROUTES.length > 0) return CURRENT_ROUTES;
 
     const { data } = await axios.get(`${ROOT}/GetCurrentRoutes`);
     const json = xml2js(data, { compact: true });
@@ -31,12 +31,23 @@ export async function getCurrentRoutes() {
 }
 
 /**
+ * Fetches info on a specific route
+ * @param {string} routeName route short name (ex: "HWA")
+ * @returns route info from a route name
+ */
+export async function getRoute(routeName) {
+    if (CURRENT_ROUTES.length === 0) await getAllRoutes();
+
+    return CURRENT_ROUTES.find(r => r.RouteShortName === routeName) || {};
+}
+
+/**
  * Get color of a route, returns black if not found
  * @param {string} routeName route short name (ex: "HWA")
  * @returns color of the route or "#000" by default
  */
 export async function getColor(routeName) {
-    if (CURRENT_ROUTES.length === 0) await getCurrentRoutes();
+    if (CURRENT_ROUTES.length === 0) await getAllRoutes();
 
     const color = ROUTE_COLORS[routeName];
     return color

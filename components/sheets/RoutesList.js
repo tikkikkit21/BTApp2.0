@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from "react"
 import { Text, View, StyleSheet } from "react-native";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons"
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import { getCurrentRoutes } from "../../controllers/routeController";
+import { getAllRoutes } from "../../controllers/routeController";
 
 export default function RoutesTab() {
     const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
@@ -12,7 +12,7 @@ export default function RoutesTab() {
     // load in routes
     useEffect(() => {
         async function fetchRoutes() {
-            const routeData = await getCurrentRoutes();
+            const routeData = await getAllRoutes();
             setRoutes(routeData);
         }
         fetchRoutes();
