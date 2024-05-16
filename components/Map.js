@@ -90,8 +90,6 @@ export default function Map({ navigation }) {
                         latitude: bus.Latitude,
                         longitude: bus.Longitude
                     }}
-                    title={bus.RouteShortName}
-                    description={`Last stop: ${bus.LastStopName}`}
                     pointerEvents="auto"
                     onSelect={() => handleSelect(bus)}
                     onDeselect={handleDeselect}
