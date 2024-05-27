@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { StackActions } from '@react-navigation/native';
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
-import { getAlerts } from "../controllers/alertController";
+import { getAlerts } from "../controllers/api/alertController";
 
 export default function Alerts({ navigation, route }) {
     const [alerts, setAlerts] = useState([]);

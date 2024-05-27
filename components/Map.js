@@ -5,9 +5,9 @@ import { FontAwesome, FontAwesome5, FontAwesome6, Octicons } from '@expo/vector-
 
 import RouteInfo from "./sheets/RouteInfo";
 
-import { getAllBuses } from "../controllers/busController";
-import { getColor, getRoutePolyline } from "../controllers/routeController";
-import { getAlerts } from "../controllers/alertController";
+import { getAllBuses } from "../controllers/api/busController";
+import { getColor, getRoutePolyline } from "../controllers/api/routeController";
+import { getAlerts } from "../controllers/api/alertController";
 
 const BURRUSS_COORDS = {
     latitude: 37.227468937500895,

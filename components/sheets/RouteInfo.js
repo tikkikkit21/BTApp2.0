@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import BottomSheet from '@gorhom/bottom-sheet';
 import { FontAwesome6 } from "@expo/vector-icons"
-import { getRoute } from "../../controllers/routeController";
+import { getRoute } from "../../controllers/api/routeController";
 
 export default function RouteInfo({ bus, canShow, onClose }) {
     const [route, setRoute] = useState({});
