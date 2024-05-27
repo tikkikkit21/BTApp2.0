@@ -84,6 +84,7 @@ export default function App() {
         fetchSuggestedRoute();
     }, []);
 
+    // helper function to create tab bar
     function renderTabBar(props) {
         return (
             <TabBar
@@ -119,6 +120,16 @@ export default function App() {
         );
     }
 
+    // render bottom sheet when applicable
+    function renderBottomSheet() {
+        switch (index) {
+            case 1:
+                return <RoutesTab />;
+            case 2:
+                return <PlanATripTab />;
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
@@ -138,8 +149,7 @@ export default function App() {
                     </Stack.Navigator>
                 </NavigationContainer>
             </View>
-            {index === 1 && <RoutesTab />}
-            {index === 2 && <PlanATripTab />}
+            {renderBottomSheet()}
             <View style={styles.tabContainer}>
                 <TabView
                     navigationState={{ index, routes }}
