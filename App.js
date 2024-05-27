@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, useWindowDimensions, Alert } from 'react-native';
+import * as Location from 'expo-location';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
@@ -8,6 +9,8 @@ import Map from './components/Map';
 import Alerts from './components/Alerts';
 import RoutesTab from './components/sheets/RoutesList';
 import PlanATripTab from './components/sheets/PlanATrip';
+import { getAllRoutes } from './controllers/api/routeController';
+import { getSuggestedRoute } from './controllers/user/aiController';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +32,57 @@ export default function App() {
         { key: 'plan', title: 'Plan a Trip' },
         { key: 'settings', title: 'Settings' },
     ]);
+
+    // suggested route alert
+    useEffect(() => {
+        async function fetchSuggestedRoute() {
+            // figure out suggested route
+            const location = await Location.getCurrentPositionAsync({});
+            const data = {
+                time: new Date(),
+                coords: {
+                    lat: location.coords.latitude,
+                    long: location.coords.longitude
+                }
+            };
+            const suggestedRoute = await getSuggestedRoute(data);
+
+            // if there's a valid suggested route, alert on initial startups
+            if (suggestedRoute) {
+                const routes = await getAllRoutes();
+                const routeInfo = routes.find(route => route.RouteShortName === suggestedRoute);
+                if (routeInfo?.RouteName && routeInfo?.RouteColor) {
+                    Alert.alert(
+                        `Suggested Route: ${suggestedRoute}`,
+                        "Would you like to view this route?",
+                        [
+                            {
+                                text: "Sure",
+                                // onPress: () => {
+                                //     navigation.navigate(
+                                //         "RoutesTab",
+                                //         {
+                                //             screen: "RouteInfo",
+                                //             params: {
+                                //                 routeShortName: suggestedRoute,
+                                //                 routeName: routeInfo.RouteName,
+                                //                 routeColor: routeInfo.RouteColor
+                                //             },
+                                //             initial: false
+                                //         }
+                                //     );
+                                // }
+                            },
+                            {
+                                text: "No thanks"
+                            }
+                        ]
+                    );
+                }
+            }
+        }
+        fetchSuggestedRoute();
+    }, []);
 
     function renderTabBar(props) {
         return (
