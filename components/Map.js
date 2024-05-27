@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { FontAwesome, FontAwesome5, FontAwesome6, Octicons } from '@expo/vector-icons';
-
+import * as Location from 'expo-location';
 import RouteInfo from "./sheets/RouteInfo";
-
 import { getAllBuses } from "../controllers/api/busController";
 import { getColor, getRoutePolyline } from "../controllers/api/routeController";
 import { getAlerts } from "../controllers/api/alertController";
+import { saveUsageDataRecord } from "../controllers/user/aiController";
 
 const BURRUSS_COORDS = {
     latitude: 37.227468937500895,
@@ -114,7 +114,19 @@ export default function Map({ navigation }) {
                 latitude: bus.Latitude - 0.023,
                 longitude: bus.Longitude
             };
-        })
+        });
+
+        // save data record
+        const location = await Location.getCurrentPositionAsync({});
+        await saveUsageDataRecord({
+            route: bus.RouteShortName,
+            coords:
+            {
+                lat: location.coords.latitude,
+                long: location.coords.longitude
+            },
+            time: new Date()
+        });
     }
 
     async function handleDeselect() {
